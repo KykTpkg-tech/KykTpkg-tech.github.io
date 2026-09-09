@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalyakorn Theppunkulngam | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Noto+Sans+Thai:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #D60270;
+            --purple: #9B4F96;
+            --blue: #0038A8;
+            --dark-overlay: rgba(10, 5, 20, 0.55);
+            --text-light: #f5f0ff;
+            --text-muted: #d4cce0;
+            --accent-glow: rgba(214, 2, 112, 0.6);
+            --blob-pink: rgba(214, 2, 112, 0.35);
+            --blob-purple: rgba(155, 79, 150, 0.4);
+            --blob-blue: rgba(0, 56, 168, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+            width: 100vw;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg,
+                    var(--pink) 0%,
+                    var(--purple) 35%,
+                    var(--blue) 70%,
+                    #001a4d 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: default;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes gradientShift {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            25% {
+                background-position: 50% 0%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            75% {
+                background-position: 50% 100%;
+            }
+        }
+
+        /* Subtle grain overlay for texture */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.15) 100%),
+                repeating-conic-gradient(rgba(255, 255, 255, 0.008) 0% 0.002%, transparent 0.002% 0.004%);
+            mix-blend-mode: overlay;
+        }
+
+        /* Three.js canvas container */
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #three-canvas canvas {
+            display: block;
+        }
+
+        /* Main content overlay */
+        .content-overlay {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 100vh;
+            padding: 2rem;
+            pointer-events: none;
+        }
+
+        .portfolio-card {
+            pointer-events: auto;
+            max-width: 650px;
+            width: 100%;
+            background: var(--dark-overlay);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 28px;
+            padding: 2.8rem 2.8rem 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.35),
+                0 0 80px rgba(214, 2, 112, 0.15),
+                0 0 40px rgba(155, 79, 150, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.03) 30%,
+                    rgba(255, 255, 255, 0.06) 50%,
+                    rgba(255, 255, 255, 0.03) 70%,
+                    transparent 100%);
+            animation: cardShimmer 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes cardShimmer {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(50%);
+            }
+        }
+
+        .portfolio-card:hover {
+            box-shadow:
+                0 35px 70px rgba(0, 0, 0, 0.45),
+                0 0 100px rgba(214, 2, 112, 0.25),
+                0 0 50px rgba(155, 79, 150, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+
+        .heading {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            margin-bottom: 0.7rem;
+            text-shadow: 0 2px 20px rgba(214, 2, 112, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        .heading .emoji-alien {
+            display: inline-block;
+            animation: floatEmoji 3s ease-in-out infinite;
+            font-size: 0.9em;
+            vertical-align: middle;
+        }
+
+        .heading .emoji-saturn {
+            display: inline-block;
+            animation: floatEmoji 4s ease-in-out infinite 0.5s;
+            font-size: 0.9em;
+            vertical-align: middle;
+        }
+
+        @keyframes floatEmoji {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-8px) rotate(5deg);
+            }
+        }
+
+        .subheading {
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            font-weight: 600;
+            color: #fff;
+            opacity: 0.92;
+            margin-bottom: 1.6rem;
+            letter-spacing: 0.01em;
+            position: relative;
+            z-index: 2;
+            line-height: 1.5;
+        }
+
+        .subheading .thai {
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-weight: 500;
+            opacity: 0.85;
+            font-size: 0.95em;
+        }
+
+        .divider {
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue));
+            border-radius: 3px;
+            margin: 1rem auto 1.4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .bio-text {
+            color: var(--text-light);
+            font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+            line-height: 1.7;
+            font-weight: 400;
+            position: relative;
+            z-index: 2;
+            text-align: left;
+        }
+
+        .bio-text p {
+            margin-bottom: 0.9rem;
+            padding-left: 1.2rem;
+            border-left: 3px solid;
+            border-image: linear-gradient(180deg, var(--pink), var(--purple), var(--blue)) 1;
+        }
+
+        .bio-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        .bio-text .highlight {
+            font-weight: 700;
+            color: #ffd6ec;
+            background: rgba(214, 2, 112, 0.2);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        .bio-text .highlight-purple {
+            font-weight: 700;
+            color: #e8d5ff;
+            background: rgba(155, 79, 150, 0.25);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        .bio-text .highlight-blue {
+            font-weight: 700;
+            color: #c5dcff;
+            background: rgba(0, 56, 168, 0.3);
+            padding: 0.15rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.92em;
+        }
+
+        .bio-text .emoji-inline {
+            font-size: 1.1em;
+            vertical-align: middle;
+            margin: 0 2px;
+        }
+
+        /* Info chips row */
+        .info-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
+        }
+
+        .chip:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .chip .chip-emoji {
+            font-size: 1rem;
+        }
+
+        /* Lava lamp blob container */
+        .blob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.6rem;
+            user-select: none;
+            pointer-events: none;
+            filter: blur(0.5px);
+            animation: blobMorph var(--blob-duration, 8s) ease-in-out infinite,
+                blobFloat var(--float-duration, 14s) ease-in-out infinite,
+                blobDrift var(--drift-duration, 20s) ease-in-out infinite;
+            animation-delay: var(--blob-delay, 0s), var(--float-delay, 0s), var(--drift-delay, 0s);
+            will-change: transform, border-radius;
+            transition: opacity 0.3s ease;
+            opacity: 0.75;
+            z-index: 2;
+        }
+
+        .blob:hover {
+            opacity: 1;
+        }
+
+        @keyframes blobMorph {
+            0%,
+            100% {
+                border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+                transform: scale(1);
+            }
+            20% {
+                border-radius: 55% 45% 60% 40% / 50% 60% 40% 50%;
+                transform: scale(1.05, 0.95);
+            }
+            40% {
+                border-radius: 45% 55% 50% 50% / 60% 40% 60% 40%;
+                transform: scale(0.95, 1.05);
+            }
+            60% {
+                border-radius: 60% 40% 45% 55% / 45% 55% 45% 55%;
+                transform: scale(1.02, 0.98);
+            }
+            80% {
+                border-radius: 50% 60% 40% 50% / 55% 45% 60% 40%;
+                transform: scale(0.98, 1.02);
+            }
+        }
+
+        @keyframes blobFloat {
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-25px) translateX(15px);
+            }
+            50% {
+                transform: translateY(-12px) translateX(-10px);
+            }
+            75% {
+                transform: translateY(-30px) translateX(8px);
+            }
+        }
+
+        @keyframes blobDrift {
+            0%,
+            100% {
+                margin-left: 0;
+                margin-top: 0;
+            }
+            25% {
+                margin-left: 20px;
+                margin-top: -15px;
+            }
+            50% {
+                margin-left: -15px;
+                margin-top: 10px;
+            }
+            75% {
+                margin-left: 10px;
+                margin-top: -20px;
+            }
+        }
+
+        /* Individual blob styling */
+        .blob-1 {
+            --blob-duration: 7s;
+            --float-duration: 13s;
+            --drift-duration: 22s;
+            --blob-delay: 0s;
+            --float-delay: 0s;
+            --drift-delay: 0s;
+            top: 12%;
+            left: 8%;
+            width: 80px;
+            height: 80px;
+            background: var(--blob-pink);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(214, 2, 112, 0.25),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.15),
+                inset 0 5px 15px rgba(255, 255, 255, 0.1);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-2 {
+            --blob-duration: 9s;
+            --float-duration: 16s;
+            --drift-duration: 19s;
+            --blob-delay: 1.5s;
+            --float-delay: 0.8s;
+            --drift-delay: 2s;
+            top: 55%;
+            left: 3%;
+            width: 65px;
+            height: 65px;
+            background: var(--blob-purple);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 25px rgba(155, 79, 150, 0.3),
+                inset 0 -5px 12px rgba(0, 0, 0, 0.15),
+                inset 0 5px 12px rgba(255, 255, 255, 0.08);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-3 {
+            --blob-duration: 6.5s;
+            --float-duration: 12s;
+            --drift-duration: 25s;
+            --blob-delay: 0.8s;
+            --float-delay: 1.5s;
+            --drift-delay: 1s;
+            top: 30%;
+            right: 5%;
+            width: 90px;
+            height: 90px;
+            background: var(--blob-blue);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 56, 168, 0.3),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.15),
+                inset 0 5px 15px rgba(255, 255, 255, 0.08);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-4 {
+            --blob-duration: 8s;
+            --float-duration: 15s;
+            --drift-duration: 21s;
+            --blob-delay: 2.2s;
+            --float-delay: 0.5s;
+            --drift-delay: 3s;
+            top: 65%;
+            right: 12%;
+            width: 70px;
+            height: 70px;
+            background: rgba(214, 2, 112, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(214, 2, 112, 0.2),
+                inset 0 -5px 12px rgba(0, 0, 0, 0.12),
+                inset 0 5px 12px rgba(255, 255, 255, 0.1);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-5 {
+            --blob-duration: 7.5s;
+            --float-duration: 14s;
+            --drift-duration: 23s;
+            --blob-delay: 0.5s;
+            --float-delay: 2s;
+            --drift-delay: 0.5s;
+            top: 15%;
+            right: 22%;
+            width: 55px;
+            height: 55px;
+            background: rgba(155, 79, 150, 0.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 6px 20px rgba(155, 79, 150, 0.25),
+                inset 0 -4px 10px rgba(0, 0, 0, 0.12),
+                inset 0 4px 10px rgba(255, 255, 255, 0.1);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-6 {
+            --blob-duration: 10s;
+            --float-duration: 18s;
+            --drift-duration: 20s;
+            --blob-delay: 3s;
+            --float-delay: 1s;
+            --drift-delay: 1.5s;
+            top: 40%;
+            left: 15%;
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 56, 168, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 6px 20px rgba(0, 56, 168, 0.25),
+                inset 0 -4px 10px rgba(0, 0, 0, 0.12),
+                inset 0 4px 10px rgba(255, 255, 255, 0.08);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        .blob-7 {
+            --blob-duration: 5.5s;
+            --float-duration: 11s;
+            --drift-duration: 24s;
+            --blob-delay: 1.2s;
+            --float-delay: 0.3s;
+            --drift-delay: 2.5s;
+            top: 75%;
+            left: 25%;
+            width: 75px;
+            height: 75px;
+            background: rgba(214, 2, 112, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.28);
+            box-shadow: 0 8px 25px rgba(214, 2, 112, 0.22),
+                inset 0 -5px 12px rgba(0, 0, 0, 0.12),
+                inset 0 5px 12px rgba(255, 255, 255, 0.1);
+            animation-duration: var(--blob-duration), var(--float-duration), var(--drift-duration);
+            animation-delay: var(--blob-delay), var(--float-delay), var(--drift-delay);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .portfolio-card {
+                padding: 1.8rem 1.5rem 1.5rem;
+                border-radius: 20px;
+                max-width: 92vw;
+                margin: 1rem auto;
+            }
+            .heading {
+                font-size: 1.5rem;
+            }
+            .subheading {
+                font-size: 0.95rem;
+            }
+            .bio-text {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+            .info-chips {
+                gap: 0.4rem;
+                margin-top: 1rem;
+            }
+            .chip {
+                padding: 0.35rem 0.7rem;
+                font-size: 0.7rem;
+            }
+            .blob {
+                opacity: 0.5;
+                font-size: 1.2rem;
+            }
+            .blob-1 {
+                width: 50px;
+                height: 50px;
+                top: 6%;
+                left: 4%;
+            }
+            .blob-2 {
+                width: 40px;
+                height: 40px;
+                top: 50%;
+                left: 2%;
+            }
+            .blob-3 {
+                width: 55px;
+                height: 55px;
+                top: 20%;
+                right: 3%;
+            }
+            .blob-4 {
+                width: 45px;
+                height: 45px;
+                top: 60%;
+                right: 5%;
+            }
+            .blob-5 {
+                width: 35px;
+                height: 35px;
+                top: 10%;
+                right: 15%;
+            }
+            .blob-6 {
+                width: 38px;
+                height: 38px;
+                top: 35%;
+                left: 8%;
+            }
+            .blob-7 {
+                width: 48px;
+                height: 48px;
+                top: 70%;
+                left: 15%;
+            }
+            .content-overlay {
+                padding: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-card {
+                padding: 1.2rem 1rem 1.2rem;
+                border-radius: 16px;
+            }
+            .heading {
+                font-size: 1.25rem;
+            }
+            .subheading {
+                font-size: 0.85rem;
+            }
+            .bio-text {
+                font-size: 0.8rem;
+                padding-left: 0;
+            }
+            .bio-text p {
+                padding-left: 0.7rem;
+            }
+            .info-chips {
+                gap: 0.3rem;
+            }
+            .chip {
+                padding: 0.3rem 0.55rem;
+                font-size: 0.62rem;
+            }
+            .blob {
+                opacity: 0.4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Three.js Canvas Container -->
+    <div id="three-canvas"></div>
+
+    <!-- Lava Lamp Blobs with Emojis -->
+    <div class="blob-container">
+        <div class="blob blob-1">🔌</div>
+        <div class="blob blob-2">🫟</div>
+        <div class="blob blob-3">🩸</div>
+        <div class="blob blob-4">🧠</div>
+        <div class="blob blob-5">🤞</div>
+        <div class="blob blob-6">❤️‍🔥</div>
+        <div class="blob blob-7">🐋</div>
+    </div>
+
+    <!-- Main Content Overlay -->
+    <div class="content-overlay">
+        <div class="portfolio-card">
+            <h1 class="heading">
+                <span class="emoji-alien">👽</span>
+                Welcome &amp; nice to meet you!
+                <span class="emoji-saturn">🪐</span>
+            </h1>
+            <p class="subheading">
+                Kalyakorn Theppunkulngam
+                <span class="thai">| กัลยกร เทพพันธ์กุลงาม</span>
+            </p>
+            <div class="divider"></div>
+            <div class="bio-text">
+                <p>
+                    You can call me <span class="highlight">Pim</span> or <span class="highlight">JJ</span>.
+                    I usually self-learn drawing and new art form stuffs <span class="emoji-inline">:]</span>
+                </p>
+                <p>
+                    <span class="highlight-purple">Age</span> 22 &nbsp;·&nbsp;
+                    <span class="highlight-purple">Birth</span> 15/12/2003 &nbsp;·&nbsp;
+                    <span class="highlight-purple">Occupation</span> College Student
+                </p>
+                <p>
+                    <span class="highlight-blue">Currently study in</span>
+                    Rajamangala University of Technology Rattanakosin
+                </p>
+            </div>
+            <div class="info-chips">
+                <span class="chip"><span class="chip-emoji">🎨</span> Self-taught Artist</span>
+                <span class="chip"><span class="chip-emoji">👽</span> Alien Enthusiast</span>
+                <span class="chip"><span class="chip-emoji">🪐</span> Space Lover</span>
+                <span class="chip"><span class="chip-emoji">🌈</span> Creative Soul</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+            }
+        }
+    </script>
+
+    <!-- Three.js Scene Script -->
+    <script type="module">
+        import * as THREE from 'three';
+
+        // --- Scene Setup ---
+        const canvasContainer = document.getElementById('three-canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x1a0a2e, 0.035);
+
+        // --- Camera ---
+        const camera = new THREE.PerspectiveCamera(
+            55,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            100
+        );
+        camera.position.set(0, 0.5, 9);
+        camera.lookAt(0, 0, 0);
+
+        // --- Renderer ---
+        const renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            alpha: true,
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.2;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        canvasContainer.appendChild(renderer.domElement);
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0x443366, 1.4);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffeedd, 2.5);
+        mainLight.position.set(5, 8, 5);
+        mainLight.castShadow = true;
+        mainLight.shadow.mapSize.width = 1024;
+        mainLight.shadow.mapSize.height = 1024;
+        mainLight.shadow.camera.near = 0.5;
+        mainLight.shadow.camera.far = 50;
+        mainLight.shadow.camera.left = -10;
+        mainLight.shadow.camera.right = 10;
+        mainLight.shadow.camera.top = 10;
+        mainLight.shadow.camera.bottom = -10;
+        mainLight.shadow.bias = -0.0001;
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0xcc88ff, 1.0);
+        fillLight.position.set(-4, 2, -3);
+        scene.add(fillLight);
+
+        const rimLight = new THREE.DirectionalLight(0x88ccff, 0.8);
+        rimLight.position.set(0, -2, -4);
+        scene.add(rimLight);
+
+        const pinkPointLight = new THREE.PointLight(0xD60270, 3, 15, 2);
+        pinkPointLight.position.set(-3.5, 1, 2);
+        scene.add(pinkPointLight);
+
+        const bluePointLight = new THREE.PointLight(0x0038A8, 3, 15, 2);
+        bluePointLight.position.set(3.5, -0.5, 2);
+        scene.add(bluePointLight);
+
+        // --- Materials ---
+        const alienBodyMat = new THREE.MeshStandardMaterial({
+            color: 0x7CCB7C,
+            flatShading: true,
+            roughness: 0.55,
+            metalness: 0.05,
+        });
+
+        const alienHeadMat = new THREE.MeshStandardMaterial({
+            color: 0x8FD98F,
+            flatShading: true,
+            roughness: 0.5,
+            metalness: 0.05,
+        });
+
+        const alienEyeMat = new THREE.MeshStandardMaterial({
+            color: 0x0a0a12,
+            roughness: 0.2,
+            metalness: 0.6,
+            emissive: 0x111122,
+            emissiveIntensity: 0.3,
+        });
+
+        const alienEyeGlintMat = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            roughness: 0.1,
+            metalness: 0.1,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.7,
+        });
+
+        const alienAntennaMat = new THREE.MeshStandardMaterial({
+            color: 0x6BB56B,
+            flatShading: true,
+            roughness: 0.5,
+            metalness: 0.1,
+        });
+
+        const alienAntennaTipMat = new THREE.MeshStandardMaterial({
+            color: 0xff6b9d,
+            roughness: 0.3,
+            metalness: 0.4,
+            emissive: 0xFF4081,
+            emissiveIntensity: 1.5,
+        });
+
+        const saturnPlanetMat = new THREE.MeshStandardMaterial({
+            color: 0xE8B88A,
+            flatShading: true,
+            roughness: 0.6,
+            metalness: 0.1,
+        });
+
+        const saturnRingMat = new THREE.MeshStandardMaterial({
+            color: 0xF5DCC4,
+            flatShading: true,
+            roughness: 0.5,
+            metalness: 0.25,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.85,
+        });
+
+        const saturnInnerRingMat = new THREE.MeshStandardMaterial({
+            color: 0xD4A574,
+            flatShading: true,
+            roughness: 0.55,
+            metalness: 0.2,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.7,
+        });
+
+        // --- Create Alien ---
+        const alienGroup = new THREE.Group();
+        alienGroup.position.set(-3.8, -0.4, 0);
+        alienGroup.castShadow = true;
+
+        // Head - Icosahedron
+        const alienHead = new THREE.Mesh(
+            new THREE.IcosahedronGeometry(1.4, 0),
+            alienHeadMat
+        );
+        alienHead.position.set(0, 0.7, 0);
+        alienHead.castShadow = true;
+        alienHead.receiveShadow = true;
+        alienGroup.add(alienHead);
+
+        // Eyes
+        const leftEye = new THREE.Mesh(
+            new THREE.SphereGeometry(0.28, 12, 8),
+            alienEyeMat
+        );
+        leftEye.position.set(-0.45, 0.75, 1.18);
+        leftEye.castShadow = true;
+        alienGroup.add(leftEye);
+
+        const rightEye = new THREE.Mesh(
+            new THREE.SphereGeometry(0.28, 12, 8),
+            alienEyeMat
+        );
+        rightEye.position.set(0.45, 0.75, 1.18);
+        rightEye.castShadow = true;
+        alienGroup.add(rightEye);
+
+        // Eye glints
+        const leftGlint = new THREE.Mesh(
+            new THREE.SphereGeometry(0.08, 6, 6),
+            alienEyeGlintMat
+        );
+        leftGlint.position.set(-0.52, 0.82, 1.42);
+        alienGroup.add(leftGlint);
+
+        const rightGlint = new THREE.Mesh(
+            new THREE.SphereGeometry(0.08, 6, 6),
+            alienEyeGlintMat
+        );
+        rightGlint.position.set(0.38, 0.82, 1.42);
+        alienGroup.add(rightGlint);
+
+        // Body
+        const alienBody = new THREE.Mesh(
+            new THREE.ConeGeometry(0.75, 1.3, 6),
+            alienBodyMat
+        );
+        alienBody.position.set(0, -0.65, 0);
+        alienBody.castShadow = true;
+        alienBody.receiveShadow = true;
+        alienGroup.add(alienBody);
+
+        // Arms
+        const armGeom = new THREE.CylinderGeometry(0.1, 0.12, 0.9, 6);
+        const leftArm = new THREE.Mesh(armGeom, alienBodyMat);
+        leftArm.position.set(-0.95, -0.5, 0);
+        leftArm.rotation.z = 0.6;
+        leftArm.rotation.x = 0.3;
+        leftArm.castShadow = true;
+        alienGroup.add(leftArm);
+
+        const rightArm = new THREE.Mesh(armGeom, alienBodyMat);
+        rightArm.position.set(0.95, -0.5, 0);
+        rightArm.rotation.z = -0.6;
+        rightArm.rotation.x = -0.3;
+        rightArm.castShadow = true;
+        alienGroup.add(rightArm);
+
+        // Antenna
+        const antennaStem = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.06, 0.08, 0.7, 6),
+            alienAntennaMat
+        );
+        antennaStem.position.set(0, 1.9, 0);
+        antennaStem.castShadow = true;
+        alienGroup.add(antennaStem);
+
+        const antennaTip = new THREE.Mesh(
+            new THREE.SphereGeometry(0.18, 10, 8),
+            alienAntennaTipMat
+        );
+        antennaTip.position.set(0, 2.28, 0);
+        antennaTip.castShadow = true;
+        alienGroup.add(antennaTip);
+
+        // Small antenna glow light
+        const antennaGlow = new THREE.PointLight(0xFF4081, 2.5, 3, 2);
+        antennaGlow.position.set(0, 2.28, 0);
+        alienGroup.add(antennaGlow);
+
+        scene.add(alienGroup);
+
+        // --- Create Saturn ---
+        const saturnGroup = new THREE.Group();
+        saturnGroup.position.set(3.8, 0.1, 0);
+        saturnGroup.rotation.z = 0.2;
+        saturnGroup.rotation.x = 0.15;
+        saturnGroup.castShadow = true;
+
+        // Planet
+        const saturnPlanet = new THREE.Mesh(
+            new THREE.SphereGeometry(1.15, 20, 14),
+            saturnPlanetMat
+        );
+        saturnPlanet.castShadow = true;
+        saturnPlanet.receiveShadow = true;
+        saturnGroup.add(saturnPlanet);
+
+        // Banding effect - small torus rings around the planet
+        for (let i = 0; i < 4; i++) {
+            const band = new THREE.Mesh(
+                new THREE.TorusGeometry(1.18, 0.05, 6, 20),
+                new THREE.MeshStandardMaterial({
+                    color: i % 2 === 0 ? 0xC99A70 : 0xD4A87A,
+                    flatShading: true,
+                    roughness: 0.55,
+                    metalness: 0.1,
+                })
+            );
+            band.position.set(0, 0.35 - i * 0.25, 0);
+            band.rotation.x = Math.PI / 2;
+            band.scale.set(1, 1, 0.6);
+            saturnGroup.add(band);
+        }
+
+        // Main rings
+        const saturnRing = new THREE.Mesh(
+            new THREE.TorusGeometry(2.1, 0.35, 8, 40),
+            saturnRingMat
+        );
+        saturnRing.rotation.x = Math.PI / 2 + 0.3;
+        saturnRing.rotation.y = 0.1;
+        saturnRing.castShadow = true;
+        saturnRing.receiveShadow = true;
+        saturnGroup.add(saturnRing);
+
+        // Inner ring
+        const saturnInnerRing = new THREE.Mesh(
+            new THREE.TorusGeometry(1.7, 0.2, 6, 36),
+            saturnInnerRingMat
+        );
+        saturnInnerRing.rotation.x = Math.PI / 2 + 0.25;
+        saturnInnerRing.rotation.y = -0.05;
+        saturnInnerRing.castShadow = true;
+        saturnGroup.add(saturnInnerRing);
+
+        // Outer thin ring
+        const saturnOuterRing = new THREE.Mesh(
+            new THREE.TorusGeometry(2.5, 0.12, 6, 48),
+            new THREE.MeshStandardMaterial({
+                color: 0xE8D5C0,
+                flatShading: true,
+                roughness: 0.4,
+                metalness: 0.3,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5,
+            })
+        );
+        saturnOuterRing.rotation.x = Math.PI / 2 + 0.35;
+        saturnOuterRing.rotation.y = 0.08;
+        saturnGroup.add(saturnOuterRing);
+
+        // Subtle glow around Saturn
+        const saturnGlow = new THREE.PointLight(0xFFD700, 1.8, 6, 2);
+        saturnGlow.position.set(0, 0, 1);
+        saturnGroup.add(saturnGlow);
+
+        scene.add(saturnGroup);
+
+        // --- Star Particles ---
+        const starCount = 400;
+        const starGeometry = new THREE.BufferGeometry();
+        const starPositions = new Float32Array(starCount * 3);
+        const starSizes = new Float32Array(starCount);
+
+        for (let i = 0; i < starCount; i++) {
+            starPositions[i * 3] = (Math.random() - 0.5) * 30;
+            starPositions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+            starPositions[i * 3 + 2] = (Math.random() - 0.5) * 20 - 5;
+            starSizes[i] = Math.random() * 3 + 0.5;
+        }
+
+        starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+        starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1));
+
+        const starMaterial = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.045,
+            transparent: true,
+            opacity: 0.7,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            sizeAttenuation: true,
+        });
+
+        const stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // --- Floating decorative shapes ---
+        const floatShapesGroup = new THREE.Group();
+        const smallGeoms = [
+            new THREE.OctahedronGeometry(0.15, 0),
+            new THREE.TetrahedronGeometry(0.12, 0),
+            new THREE.DodecahedronGeometry(0.1, 0),
+            new THREE.IcosahedronGeometry(0.14, 0),
+        ];
+        const smallMats = [
+            new THREE.MeshStandardMaterial({ color: 0xD60270, flatShading: true, roughness: 0.4,
+                metalness: 0.3, emissive: 0xD60270, emissiveIntensity: 0.5 }),
+            new THREE.MeshStandardMaterial({ color: 0x9B4F96, flatShading: true, roughness: 0.4,
+                metalness: 0.3, emissive: 0x9B4F96, emissiveIntensity: 0.5 }),
+            new THREE.MeshStandardMaterial({ color: 0x0038A8, flatShading: true, roughness: 0.4,
+                metalness: 0.3, emissive: 0x0038A8, emissiveIntensity: 0.5 }),
+            new THREE.MeshStandardMaterial({ color: 0xff6b9d, flatShading: true, roughness: 0.4,
+                metalness: 0.3, emissive: 0xff6b9d, emissiveIntensity: 0.4 }),
+        ];
+
+        const floatShapes = [];
+        for (let i = 0; i < 12; i++) {
+            const geom = smallGeoms[i % smallGeoms.length];
+            const mat = smallMats[i % smallMats.length];
+            const shape = new THREE.Mesh(geom, mat);
+            shape.position.set(
+                (Math.random() - 0.5) * 14,
+                (Math.random() - 0.5) * 8,
+                (Math.random() - 0.5) * 6 - 2
+            );
+            shape.castShadow = true;
+            shape.userData = {
+                floatSpeed: 0.3 + Math.random() * 0.6,
+                floatAmplitude: 0.2 + Math.random() * 0.5,
+                rotSpeedX: (Math.random() - 0.5) * 1.5,
+                rotSpeedY: (Math.random() - 0.5) * 1.5,
+                initialY: shape.position.y,
+                initialX: shape.position.x,
+            };
+            floatShapesGroup.add(shape);
+            floatShapes.push(shape);
+        }
+        scene.add(floatShapesGroup);
+
+        // --- Mouse Interaction ---
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+
+        window.addEventListener('mousemove', (event) => {
+            targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            targetMouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        window.addEventListener('touchmove', (event) => {
+            if (event.touches.length > 0) {
+                targetMouseX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+                targetMouseY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
+            }
+        }, { passive: true });
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+        let elapsedTime = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            elapsedTime += delta;
+
+            // Smooth mouse movement
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+
+            // Camera parallax
+            camera.position.x = mouseX * 0.9;
+            camera.position.y = 0.5 + mouseY * 0.7;
+            camera.lookAt(0, 0, 0);
+
+            // Alien bobbing and rotation
+            alienGroup.position.y = -0.4 + Math.sin(elapsedTime * 1.2) * 0.25;
+            alienGroup.rotation.y = Math.sin(elapsedTime * 0.6) * 0.25 + mouseX * 0.15;
+            alienGroup.rotation.x = Math.sin(elapsedTime * 0.8) * 0.08 + mouseY * 0.1;
+
+            // Alien antenna tip pulse
+            const antennaPulse = 1.0 + Math.sin(elapsedTime * 3) * 0.5;
+            antennaTip.material.emissiveIntensity = antennaPulse;
+            antennaGlow.intensity = 1.5 + Math.sin(elapsedTime * 3) * 1.2;
+
+            // Saturn rotation
+            saturnGroup.rotation.y = elapsedTime * 0.35 + mouseX * 0.2;
+            saturnGroup.rotation.x = 0.15 + Math.sin(elapsedTime * 0.4) * 0.08 + mouseY * 0.08;
+            saturnGroup.position.y = 0.1 + Math.sin(elapsedTime * 0.9 + 2) * 0.3;
+
+            // Saturn ring subtle wobble
+            saturnRing.rotation.z = Math.sin(elapsedTime * 0.5) * 0.03;
+            saturnInnerRing.rotation.z = -Math.sin(elapsedTime * 0.6) * 0.04;
+            saturnOuterRing.rotation.z = Math.sin(elapsedTime * 0.45 + 1) * 0.02;
+
+            // Rotate star field slowly
+            stars.rotation.y = elapsedTime * 0.04;
+            stars.rotation.x = Math.sin(elapsedTime * 0.02) * 0.1;
+
+            // Animate floating shapes
+            floatShapes.forEach((shape, index) => {
+                const data = shape.userData;
+                shape.position.y = data.initialY + Math.sin(elapsedTime * data.floatSpeed + index) * data
+                    .floatAmplitude;
+                shape.position.x = data.initialX + Math.cos(elapsedTime * data.floatSpeed * 0.7 + index) * data
+                    .floatAmplitude * 0.8;
+                shape.rotation.x += data.rotSpeedX * delta;
+                shape.rotation.y += data.rotSpeedY * delta;
+                shape.rotation.z += data.rotSpeedX * delta * 0.5;
+            });
+
+            // Pink point light pulse
+            pinkPointLight.intensity = 2.5 + Math.sin(elapsedTime * 1.5) * 1.0;
+            bluePointLight.intensity = 2.5 + Math.cos(elapsedTime * 1.2) * 1.0;
+
+            // Subtle scene sway
+            floatShapesGroup.rotation.y = Math.sin(elapsedTime * 0.3) * 0.1;
+            floatShapesGroup.rotation.x = Math.cos(elapsedTime * 0.25) * 0.07;
+
+            renderer.render(scene, camera);
+        }
+
+        // --- Window Resize ---
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            // Adjust positions for smaller screens
+            if (window.innerWidth < 768) {
+                alienGroup.position.x = -2.6;
+                saturnGroup.position.x = 2.6;
+                camera.position.z = 10;
+                camera.fov = 50;
+            } else {
+                alienGroup.position.x = -3.8;
+                saturnGroup.position.x = 3.8;
+                camera.position.z = 9;
+                camera.fov = 55;
+            }
+            camera.updateProjectionMatrix();
+        });
+
+        // Initial mobile check
+        if (window.innerWidth < 768) {
+            alienGroup.position.x = -2.6;
+            saturnGroup.position.x = 2.6;
+            camera.position.z = 10;
+            camera.fov = 50;
+            camera.updateProjectionMatrix();
+        }
+
+        // Start animation
+        animate();
+
+        console.log('🚀 Low-poly 3D portfolio loaded! 👽🪐');
+    </script>
+</body>
+</html>
