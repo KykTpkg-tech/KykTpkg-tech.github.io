@@ -18,7 +18,7 @@ AFRAME.registerComponent('fit', {
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
       model.position.set(-center.x, -box.min.y, -center.z);
-      this.el.object3D.scale.setScalar(3.8 / Math.max(size.x, size.y, size.z));
+      this.el.object3D.scale.setScalar(3 / Math.max(size.x, size.y, size.z));
       if (model.animations.length) {
         this.mixer = new THREE.AnimationMixer(model);
         this.mixer.clipAction(model.animations[0]).play();
@@ -44,8 +44,8 @@ AFRAME.registerComponent('fit', {
 <p style="position:fixed; bottom:8px; left:10px; margin:0; padding:4px 8px; border-radius:6px;
    background:#000a; color:#fff; font:12px system-ui, Tahoma, sans-serif;">
   <a href="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/HIRO.jpg" target="_blank" style="color:#9ef">marker</a>
-  · Epona by
-  <a href="https://sketchfab.com/3d-models/epona-1f1da2940b0d4ddcb4beae1680c47918" target="_blank" style="color:#9ef">Vasian-Digital3D</a>
+  · Robot Playground by
+  <a href="by Hadrien59 (https://skfb.ly/6QXFq) is licensed under Creative Commons Attribution (http://creativecommons.org/licenses/by/4.0/)" target="_blank" style="color:#9ef">Vasian-Digital3D</a>
   · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" style="color:#9ef">CC BY 4.0</a>
 </p>
 </body>
