@@ -18,7 +18,7 @@ AFRAME.registerComponent('fit', {
       const size = box.getSize(new THREE.Vector3());
       const center = box.getCenter(new THREE.Vector3());
       model.position.set(-center.x, -box.min.y, -center.z);
-      this.el.object3D.scale.setScalar(1.8 / Math.max(size.x, size.y, size.z));
+      this.el.object3D.scale.setScalar(3.8 / Math.max(size.x, size.y, size.z));
       if (model.animations.length) {
         this.mixer = new THREE.AnimationMixer(model);
         this.mixer.clipAction(model.animations[0]).play();
@@ -35,7 +35,7 @@ AFRAME.registerComponent('fit', {
   arjs="sourceType: webcam; debugUIEnabled: false; cameraParametersUrl: https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.8/data/data/camera_para.dat;">
 
   <a-marker preset="hiro" smooth="true">
-    <a-entity gltf-model="http://KykTpkg-tech.github.io/teenage_mutant_ninja_turtles_-_raphael.glb" fit></a-entity>
+    <a-entity gltf-model="http://KykTpkg-tech.github.io/robot_playground.glb" fit></a-entity>
   </a-marker>
 
   <a-entity camera></a-entity>
